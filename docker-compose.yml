@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # Сервис для Laravel (PHP + Apache)
+  app:
+    image: php:8.2-apache
+    container_name: laravel_app
+    ports:
+      - "8000:80"
+    volumes:
+      - ./backend:/var/www/html
+      - ./backend/.docker/php/php.ini:/usr/local/etc/php/php.ini
+    networks:
+      - app_network
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html/public
+    working_dir: /var/www/html
+    depends_on:
+      - mysql
+    # Установка необходимых PHP расширений
+    command: bash -c "apt-get update && apt-get install -y libxml2-dev && docker-php-ext-install xml dom && apache2-foreground"
+
+  # Сервис для Next.js (Node.js)
+  nextjs:
+    image: node:18-alpine
+    container_name: nextjs_app
+    volumes:
+      - ./frontend:/app
+    working_dir: /app
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    networks:
+      - app_network
+    depends_on:
+      - app
+
+  # Сервис для базы данных MySQL
+  mysql:
+    image: mysql:8
+    container_name: mysql_db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: user
+      MYSQL_PASSWORD: root
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge

@@ -1,0 +1,9 @@
+.backgroundBlock{
+    background-color: var(--bgcontrastDark);
+}
+.gridLayout{
+
+    display: grid;
+    grid-template-columns: 4fr 2fr;
+    gap: 10px;
+}
