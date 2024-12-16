@@ -14,7 +14,7 @@ const FormPaste =({getRegister})=>{
         console.log(data);
         if(data.TextAreaValue == undefined || data.TextAreaValue.length<=1 ){
             event.preventDefault();
-            console.log("wrong");
+            console.log("wro");
             return false;
         }
 
