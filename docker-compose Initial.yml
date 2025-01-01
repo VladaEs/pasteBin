@@ -1,9 +1,11 @@
 version: '3.8'
 
 services:
-  # Сервис для Laravel (PHP + Apache)
+  # Laravel service (PHP + Apache)
   app:
-    image: php:8.2-apache
+    build:
+      context: ./backend
+      dockerfile: Dockerfile # You should create a Dockerfile in the backend folder
     container_name: laravel_app
     ports:
       - "8000:80"
@@ -14,15 +16,20 @@ services:
       - app_network
     environment:
       - APACHE_DOCUMENT_ROOT=/var/www/html/public
+      - DB_HOST=mysql
+      - DB_DATABASE=laravel
+      - DB_USERNAME=user
+      - DB_PASSWORD=root
     working_dir: /var/www/html
     depends_on:
       - mysql
-    # Установка необходимых PHP расширений
-    command: bash -c "apt-get update && apt-get install -y libxml2-dev && docker-php-ext-install xml dom && apache2-foreground"
+    command: apache2-foreground
 
-  # Сервис для Next.js (Node.js)
+  # Next.js service (Node.js)
   nextjs:
-    image: node:18-alpine
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile # You should create a Dockerfile in the frontend folder
     container_name: nextjs_app
     volumes:
       - ./frontend:/app
@@ -35,7 +42,7 @@ services:
     depends_on:
       - app
 
-  # Сервис для базы данных MySQL
+  # MySQL Database service
   mysql:
     image: mysql:8
     container_name: mysql_db

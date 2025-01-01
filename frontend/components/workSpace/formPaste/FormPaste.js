@@ -48,7 +48,7 @@ const FormPaste =({getRegister})=>{
             <FormRowWrapper>
                 <div className="text-white flex-1"></div>
                 <InputWrapper>
-                    <input type='submit' value={"submit"} className=" w-7/12 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"/>
+                    <input type='submit' value={"submit"} className=" w-7/12 bg-transparent cursor-pointer hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"/>
                 </InputWrapper>
             </FormRowWrapper>
         </form>

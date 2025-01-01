@@ -1,0 +1,57 @@
+version: '3.7'
+
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: db
+      DB_DATABASE: laravel
+      DB_USERNAME: root
+      DB_PASSWORD: root
+    depends_on:
+      - db
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend:/app/backend
+    networks:
+      - app
+
+
+
+
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    tty: true
+    networks:
+      - app
+    ports:
+      - 3000:3000
+    volumes:
+     - ./frontend:/app/frontend
+    depends_on:
+      - backend
+
+
+  db:
+    image: mysql:5.7
+    ulimits:
+      nofile: # Fix memory leak issue on some systems when LimitCORE=infinity (containerd)
+        soft: 1048576
+        hard: 1048576
+    environment:
+      MYSQL_DATABASE: 'laravel'
+      MYSQL_ROOT_PASSWORD: 'root'
+    networks:
+      - app
+
+
+
+
+networks:
+  app: 
+    driver: bridge
