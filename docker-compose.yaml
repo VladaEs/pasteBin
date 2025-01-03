@@ -20,8 +20,6 @@ services:
       - app
 
 
-
-
   frontend:
     build: 
       context: ./frontend
