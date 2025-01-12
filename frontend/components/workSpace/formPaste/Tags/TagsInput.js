@@ -4,8 +4,8 @@ import FormRowWrapper from "../FormRowWrapper/FormRowWrapper";
 
 import PasteOptionSpan from "../../PasteOptions/PasteOptionSpan/PasteOptionSpan";
 import InputWrapper from "../inputWrapper/InputWrapper";
-import { useState, useRef, useEffect } from "react";
-const TagsInput=({register, setValue})=>{
+import { useState, useRef } from "react";
+const TagsInput=({register, setValue, validationOptions})=>{
     
     const [tags, SetTags]= useState([]);
     const [currentTagVal, SetCurrentTagVal] = useState('');
@@ -61,7 +61,7 @@ const TagsInput=({register, setValue})=>{
         onChange={handleChange} 
         value={currentTagVal} 
     />
-    <input type='hidden' {...register} ref={hiddenField}/>
+    <input type='hidden' {...register} {...validationOptions} ref={hiddenField}/>
             </div>
                 </InputWrapper>
         </FormRowWrapper>

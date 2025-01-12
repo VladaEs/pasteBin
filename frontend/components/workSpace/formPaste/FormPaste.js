@@ -8,8 +8,12 @@ import FormRowWrapper from "./FormRowWrapper/FormRowWrapper";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import InputWrapper from "./inputWrapper/InputWrapper";
+
+
+
 const FormPaste =({getRegister})=>{
-    const {register, handleSubmit, setValue}=useForm();
+    console.log(process.env.API_PATH);
+    const {register, handleSubmit, setValue, formState: {errors}}=useForm();
     const onSubmit = (data, event) => {
         console.log(data);
         if(data.TextAreaValue == undefined || data.TextAreaValue.length<=1 ){
@@ -17,25 +21,16 @@ const FormPaste =({getRegister})=>{
             console.log("wro");
             return false;
         }
-
-
         if(event.keyCode == 13) {
             event.preventDefault();
             return false;
         }
-        
     }
     
     useEffect(()=>{
         getRegister(register('TextAreaValue'), setValue)
     },[])
-
-   
-
-
-
-
-
+    console.log(errors)
     return(
 
         <form className={`wrapper w-full flex flex-col gap-1`} onSubmit={handleSubmit(onSubmit)} >
@@ -44,7 +39,8 @@ const FormPaste =({getRegister})=>{
             <PasteExpiration register= {register('PasteExpiration')}/>
             <PastePrivacy register= {register('Privacy')}/>
             <InputPassword register= {register('Password')}/>
-            <InputPasteName register= {register('PasteName')}/>
+            <InputPasteName register={register('PasteName', { required: "Paste name is required" })}/>
+            <p className="text-orange-700">{errors.PasteName?.message}</p>
             <FormRowWrapper>
                 <div className="text-white flex-1"></div>
                 <InputWrapper>
