@@ -8,7 +8,7 @@
 <body>
     @if (1==1)
         <h1>Hello it is true</h1>
-    
+
     @endif
     <h2>Hello my page</h2>
 
