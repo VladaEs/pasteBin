@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pastes', function (Blueprint $table) {
-            $table->id();
+            $table->foreign('id')->references('paste_id')->on('paste_settings')->onDelete('cascade');
             $table->string("filename", 255);
-            $table->integer("author_id");
+            $table->foreign("author_id")->references("users")->on("id")->onDelete("cascade");
             $table->timestamps();
         });
     }

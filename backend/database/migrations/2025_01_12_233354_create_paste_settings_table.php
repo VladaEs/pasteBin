@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('paste_settings', function (Blueprint $table) {
             $table->id();
+            $table->integer("paste_id");
+            $table->foreign("category_id")->references("paste_categories")->on("id")->delete("cascade");
+            $table->bigInteger('paste_expiration')->nullable()->default(NULL);
+            $table->boolean('paste_privacy')->default(0);
+            $table->string("password", 255)->nullable()->default(NULL);
             $table->timestamps();
         });
     }

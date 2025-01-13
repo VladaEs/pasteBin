@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('paste_tags', function (Blueprint $table) {
             $table->id();
+            $table->foreign("paste_id")->references("pastes")->on("id")->onDelete("cascade");
+            $table->foreign("tag_id")->references("tags")->on("id")->onDelete("cascade");
             $table->timestamps();
         });
     }

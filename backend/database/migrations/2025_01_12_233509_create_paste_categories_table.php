@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('paste_categories', function (Blueprint $table) {
             $table->id();
+            $table->string("paste_category", 100);
             $table->timestamps();
         });
     }
