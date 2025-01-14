@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('paste_categories', function (Blueprint $table) {
-            $table->id();
-            $table->string("paste_category", 100);
+        Schema::create('paste_tags', function (Blueprint $table) {
+            $table->bigInteger('id')->unsigned()->primary();
+            $table->bigInteger("paste_id")->unsigned()->nullable(false);
+            $table->bigInteger("tag_id")->unsigned();
             $table->timestamps();
+            $table->foreign("tag_id")->references("tags")->on("id")->onDelete("cascade");
         });
     }
 
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('paste_categories');
+        Schema::dropIfExists('paste_tags');
     }
 };

@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pastes', function (Blueprint $table) {
-            $table->foreign('id')->references('paste_id')->on('paste_settings')->onDelete('cascade');
-            $table->string("filename", 255);
-            $table->foreign("author_id")->references("users")->on("id")->onDelete("cascade");
+        Schema::create('paste_categories', function (Blueprint $table) {
+            $table->bigInteger('id')->unsigned()->primary();
+            $table->string("paste_category", 100);
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pastes');
+        Schema::dropIfExists('paste_categories');
     }
 };
