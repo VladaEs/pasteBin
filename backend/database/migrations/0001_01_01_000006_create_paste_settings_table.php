@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('paste_settings', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
-            $table->bigInteger('id')->unsigned()->primary();
-            $table->bigInteger("paste_id")->unsigned();
-            $table->bigInteger("category_id")->unsigned()->default(0);
-            $table->bigInteger('paste_expiration')->nullable()->default(NULL);
+
+            $table->unsignedBigInteger('id')->primary();
+            $table->unsignedBigInteger("paste_id");
+            $table->unsignedBigInteger("category_id")->default(0);
+            $table->unsignedBigInteger('paste_expiration')->default(NULL);
             $table->boolean('paste_privacy')->default(0);
             $table->string("password", 255)->nullable()->default(NULL);
             $table->timestamps();
-            $table->foreign("category_id")->references("id")->on("paste_categories")->onDelete("cascade");
+
 
         });
     }

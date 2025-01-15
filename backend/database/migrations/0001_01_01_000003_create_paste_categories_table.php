@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('paste_categories', function (Blueprint $table) {
-            $table->bigInteger('id')->unsigned()->primary();
+            $table->unsignedBigInteger('id')->primary();
             $table->string("paste_category", 100);
             $table->timestamps();
         });

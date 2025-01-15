@@ -12,20 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pastes', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
-            $table->bigInteger('id')->unsigned()->primary();  // Основной ID для таблицы Pastes
+            $table->unsignedBigInteger('id')->primary();  // Основной ID для таблицы Pastes
             $table->string("filename", 255);
-            $table->bigInteger("author_id")->unsigned();
+            $table->unsignedBigInteger("author_id");
             $table->timestamps();
 
 
-        });
-        Schema::table('pastes', function(Blueprint $table)
-        {
-            $table->engine = 'InnoDB';
-            $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('id')->references('paste_id')->on('paste_settings')->onDelete('cascade');
-            $table->foreign('id')->references('paste_id')->on('paste_tags')->onDelete('cascade');
         });
     }
 

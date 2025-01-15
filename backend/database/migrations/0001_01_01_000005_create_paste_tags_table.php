@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('paste_tags', function (Blueprint $table) {
-            $table->bigInteger('id')->unsigned()->primary();
-            $table->bigInteger("paste_id")->unsigned()->nullable(false);
-            $table->bigInteger("tag_id")->unsigned();
+            $table->unsignedBigInteger('id')->primary();
+            $table->unsignedBigInteger("paste_id")->nullable(false);
+            $table->unsignedBigInteger("tag_id")->nullable(false);
             $table->timestamps();
-            $table->foreign("tag_id")->references("tags")->on("id")->onDelete("cascade");
+
         });
     }
 
