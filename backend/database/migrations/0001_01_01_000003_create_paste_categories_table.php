@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('paste_categories', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary();
-            $table->string("paste_category", 100);
+            $table->id();
+            $table->string("paste_category", 100)->default(0);
             $table->timestamps();
         });
     }

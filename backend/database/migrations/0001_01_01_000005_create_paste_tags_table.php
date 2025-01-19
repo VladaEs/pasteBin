@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('paste_tags', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary();
+            $table->id();
             $table->unsignedBigInteger("paste_id")->nullable(false);
             $table->unsignedBigInteger("tag_id")->nullable(false);
             $table->timestamps();

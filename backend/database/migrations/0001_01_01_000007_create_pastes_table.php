@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pastes', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary();  // Основной ID для таблицы Pastes
-            $table->string("filename", 255);
-            $table->unsignedBigInteger("author_id");
+            $table->id();
+            $table->string("filename", 255)->default('');
+            $table->unsignedBigInteger("author_id")->nullable();
             $table->timestamps();
 
 

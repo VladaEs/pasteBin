@@ -15,7 +15,6 @@ const FormPaste =({getRegister})=>{
     console.log(process.env.API_PATH);
     const {register, handleSubmit, setValue, formState: {errors}}=useForm();
     const onSubmit = (data, event) => {
-        console.log(data);
         if(data.TextAreaValue == undefined || data.TextAreaValue.length<=1 ){
             event.preventDefault();
             console.log("wro");
@@ -25,7 +24,27 @@ const FormPaste =({getRegister})=>{
             event.preventDefault();
             return false;
         }
+
+        data["user_id"] = 1;
+        console.log(data);
+
+        // fetch(process.env.API_PATH +"/createpaste")
+        // .then((responce) => responce.json())
+        // .then((responce)=> console.log(responce));
+
+        fetch(process.env.API_PATH + "/createpaste", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',  
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),  
+            cache: 'default'  
+        })
+        .then((responce) => responce.json())
+        .then((responce)=> console.log(responce));
     }
+
     
     useEffect(()=>{
         getRegister(register('TextAreaValue'), setValue)

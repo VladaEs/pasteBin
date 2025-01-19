@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('paste_settings', function (Blueprint $table) {
 
-            $table->unsignedBigInteger('id')->primary();
-            $table->unsignedBigInteger("paste_id");
+            $table->id();
+            $table->unsignedBigInteger("paste_id")->nullable(false);
             $table->unsignedBigInteger("category_id")->default(0);
             $table->unsignedBigInteger('paste_expiration')->default(NULL);
             $table->boolean('paste_privacy')->default(0);
