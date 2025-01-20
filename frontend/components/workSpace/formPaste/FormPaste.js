@@ -12,19 +12,12 @@ import InputWrapper from "./inputWrapper/InputWrapper";
 
 
 const FormPaste =({getRegister})=>{
-    console.log(process.env.API_PATH);
     const {register, handleSubmit, setValue, formState: {errors}}=useForm();
     const onSubmit = (data, event) => {
-        if(data.TextAreaValue == undefined || data.TextAreaValue.length<=1 ){
-            event.preventDefault();
-            console.log("wro");
-            return false;
-        }
-        if(event.keyCode == 13) {
+        if(data.TextAreaValue == undefined || data.TextAreaValue.length<=1 || event.keyCode == 13){
             event.preventDefault();
             return false;
         }
-
         data["user_id"] = 1;
         console.log(data);
 
@@ -45,11 +38,21 @@ const FormPaste =({getRegister})=>{
         .then((responce)=> console.log(responce));
     }
 
-    
+    const initFormSettingsHandler =()=>{
+        fetch(process.env.API_PATH +"/pastesettings")
+        .then((responce) => responce.json())
+        .then((responce)=> console.log(responce));
+    }
+
     useEffect(()=>{
         getRegister(register('TextAreaValue'), setValue)
-    },[])
-    console.log(errors)
+        initFormSettingsHandler();
+
+
+    },[]);
+
+
+
     return(
 
         <form className={`wrapper w-full flex flex-col gap-1`} onSubmit={handleSubmit(onSubmit)} >

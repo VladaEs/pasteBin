@@ -11,7 +11,7 @@ const PasteOptions =(props )=>{
             <div className="  text-white flex-1"><PasteOptionSpan>Category</PasteOptionSpan></div>
             <InputWrapper>
             <select id="category" {...props.register} className="w-full gap-5 bg-gray-50 border border-gray-300 dark:text-neutral-400 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block p-2.5  dark:bg-neutral-900 dark:border-neutral-700">
-                 <option value="DEFAULT">None</option>
+                 <option value="1">None</option>
                  <option value="US">Cryptocurrency</option>
                  <option value="CA">Cybersecurity</option>
                  <option value="FR">Fixing</option>

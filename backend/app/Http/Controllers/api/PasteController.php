@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PasteResource;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Storage;
 class PasteController extends Controller
 {
     public function index(){
@@ -26,23 +26,21 @@ class PasteController extends Controller
             "PasteName" =>'required|string|max:255',
             "TextAreaValue" =>"required|string",
             "Category" =>"integer",
-
         ]);
         if($validator->fails()){
             return response()->json(["message"=>"error"], 424);
         }
-        // $request->validate([
-        //     "PasteName" =>'required|string|max:255',
-        //     "TextAreaValue" =>"required|string",
-        // ]);
-
-
+        $request->validate([
+            "PasteName" =>'required|string|max:255',
+            "TextAreaValue" =>"required|string",
+        ]);
 
         // i will need this bit, will comment until i create a pasteSettings
-        // $paste = Paste::create([
-        //     "filename" => $request['PasteName'],
-        //     "author_id" => $request["user_id"],
-        // ]);
+         $paste = Paste::create([
+            "filename" => $request['PasteName'],
+            "author_id" => $request["user_id"],
+        ]);
+
         $paste_setting = pasteSetting::create([
             "paste_id" =>$paste["id"],
             "category_id" => $request["Category"],
@@ -52,7 +50,7 @@ class PasteController extends Controller
 
 
         ]);
-
+        Storage::disk('local')->put('example.txt', "content test");
         return response()->json(["message"=>"Paste was created succesfully"], 200);
     }
     public function show(){

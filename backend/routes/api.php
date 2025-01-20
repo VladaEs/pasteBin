@@ -1,9 +1,11 @@
 <?php
-use App\Http\Controllers\api\PasteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\api\PasteController;
+use App\Http\Controllers\api\PasteSettingsController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
-Route::apiResource("/createpaste", PasteController::class );
+Route::apiResource("/createpaste", PasteController::class )->name('name',"createpaste");
+Route::get("/pastesettings", [PasteSettingsController::class, "index"])->name("pastesetttings");
