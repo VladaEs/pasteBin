@@ -6,13 +6,14 @@ import InputPassword from "./InputPassword/InputPassword";
 import InputPasteName from "./InputPasteName/InputPasteName";
 import FormRowWrapper from "./FormRowWrapper/FormRowWrapper";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import InputWrapper from "./inputWrapper/InputWrapper";
-
+import fetchData from "@/components/CustomHooks/serverSideFetch";
 
 
 const FormPaste =({getRegister})=>{
     const {register, handleSubmit, setValue, formState: {errors}}=useForm();
+    const [formoptions, SetFormOptions] = useState({});
     const onSubmit = (data, event) => {
         if(data.TextAreaValue == undefined || data.TextAreaValue.length<=1 || event.keyCode == 13){
             event.preventDefault();
@@ -38,15 +39,11 @@ const FormPaste =({getRegister})=>{
         .then((responce)=> console.log(responce));
     }
 
-    const initFormSettingsHandler =()=>{
-        fetch(process.env.API_PATH +"/pastesettings")
-        .then((responce) => responce.json())
-        .then((responce)=> console.log(responce));
-    }
+
 
     useEffect(()=>{
         getRegister(register('TextAreaValue'), setValue)
-        initFormSettingsHandler();
+        fetchData("/pastesettings");
 
 
     },[]);
