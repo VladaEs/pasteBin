@@ -15,7 +15,7 @@ COPY composer.json composer.lock /app/backend/
 
 
 RUN composer install --no-autoloader --no-scripts
-RUN npm run dev
+
 
 COPY . .
 
@@ -26,4 +26,4 @@ RUN composer dump-autoload
 EXPOSE 8000
 
 
-CMD php artisan serve --host=127.0.0.1 --port=8000
+CMD php artisan serve --host=0.0.0.0 --port=8000
