@@ -12,4 +12,7 @@ Route::get('/test', function(){
 Route::get('/login', function () {
     return view('login');
 });
+Route::post("savepaste", function(){
+    return 1;
+});
 
