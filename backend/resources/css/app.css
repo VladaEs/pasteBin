@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root {
+    --background: #ffffff;
+    --foreground: #171717;
+    --bgDark: #2b2b2b;
+    --bgcontrastDark:#252525;
+    --textcolorDark: #dddddd;
+
+}
+
+
+
+.backgroundHeader{
+    background-color: var(--foreground);
+}

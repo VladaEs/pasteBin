@@ -15,7 +15,7 @@ COPY composer.json composer.lock /app/backend/
 
 
 RUN composer install --no-autoloader --no-scripts
-
+RUN npm run dev
 
 COPY . .
 
