@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag;
+use App\Models\Paste;
+use Illuminate\Support\Str;
+use App\Models\pasteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
+
+
+
 class formController extends Controller{
 
     public function index(){
@@ -25,7 +31,14 @@ class formController extends Controller{
         if($pasteContent = $request->input("pasteContent") && $pasteName = $request->input("pasteName")){
             $uuid = Str::uuid()->toString();
             $fileName= $pasteName ."_" .$uuid;
-            Storage::disk('public')->put($fileName,$pasteContent);
+            if($password = $request->input("password")){
+                Storage::disk('local')->put($fileName,$pasteContent);
+            }else{
+                Storage::disk('public')->put($fileName,$pasteContent);
+            }
+
+
+
         }
 
         return 1;
