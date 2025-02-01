@@ -20,7 +20,7 @@
                         <x-textfield>
                             {{ __('New Paste') }}
                         </x-textfield>
-                        <x-textarea placeholder="Type your message here" id="TextArea" rows='5' />
+                        <x-textarea placeholder="Type your message here" name="pasteContent" id="TextArea" rows='5' form="pasteForm" />
                         <x-textfield rows='10'>
                             {{ __('Optional Paste Settings') }}
                         </x-textfield>
@@ -28,9 +28,12 @@
                         </hr>
 
 
-                        <x-form.form-paste action="" method="POST" id="pasteForm"
+                        <x-form.form-paste action="{{route('createPaste')}}" method="POST" id="pasteForm"
                             onkeydown="return event.key != 'Enter';">
                             {{-- Select Category--}}
+
+                            @csrf
+
                             <x-form.form-row-wrapper>
                                 <div class="text-white flex-1">
                                     <x-form.paste-option-span>{{ __('Category') }}</x-form.paste-option-span></div>
@@ -126,10 +129,11 @@
                                 </x-form.input-wrapper>
                             </x-form.form-row-wrapper>
                             {{-- input name --}}
-
-                            <x-button type="submit" color="blue">
-                                {{__("Create")}}
-                            </x-button>
+                            <x-form.form-row-wrapper>
+                                <x-button type="submit" color="blue">
+                                    {{__("Create")}}
+                                </x-button>
+                        </x-form.form-row-wrapper>
                             </x-form-paste>
 
                     </div>
