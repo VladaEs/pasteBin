@@ -4,9 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\formController;
 
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [formController::class, "index"])->name('home');
 Route::get('/test', function(){
     return Redirect::to('/');
 

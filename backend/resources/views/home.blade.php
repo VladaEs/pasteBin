@@ -39,13 +39,10 @@
                                     <x-form.paste-option-span>{{ __('Category') }}</x-form.paste-option-span></div>
                                 <x-form.input-wrapper>
                                     <x-form.form-select name="Category">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                        <option>6</option>
-                                        <option>7</option>
+                                        @forEach($categories as $category){
+                                            <option value="{{$category["id"]}}"> {{$category["paste_category"]}}</option>
+                                        }
+                                        @endforeach
                                         </x-form-select>
                                 </x-form.input-wrapper>
                             </x-form.form-row-wrapper>
@@ -76,13 +73,12 @@
                                     <x-form.paste-option-span>{{ __('Paste Expiration') }}</x-form.paste-option-span></div>
                                 <x-form.input-wrapper>
                                     <x-form.form-select name="expiration">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                        <option>6</option>
-                                        <option>7</option>
+
+                                        @forEach($expirationTime as $expTime){
+                                            <option value="{{$expTime["id"]}}">{{$expTime['expiration_name']}}</option>
+                                        }
+                                        @endforeach
+
                                         </x-form-select>
                                 </x-form.input-wrapper>
                             </x-form.form-row-wrapper>
@@ -95,13 +91,11 @@
                                     <x-form.paste-option-span>{{ __('Paste Privacy') }}</x-form.paste-option-span></div>
                                 <x-form.input-wrapper>
                                     <x-form.form-select name="privacy">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                        <option>6</option>
-                                        <option>7</option>
+                                        @foreach($privacy as $index => $pr)
+                                            <option value="{{ $index }}">{{ $pr }}</option>
+                                        @endforeach
+
+
                                         </x-form-select>
                                 </x-form.input-wrapper>
                             </x-form.form-row-wrapper>
