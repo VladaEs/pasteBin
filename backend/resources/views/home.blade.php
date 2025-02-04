@@ -8,6 +8,9 @@
     <title>PasteBin made By VladaEs</title>
     @vite('resources/css/app.css')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
+
 </head>
 
 <body>
@@ -15,6 +18,7 @@
         <x-header />
         <div class='spaceSide'>
             <x-workspace>
+
                 <x-gridlayoutform>
                     <div>
                         <x-textfield>
@@ -40,6 +44,7 @@
                                 <x-form.input-wrapper>
                                     <x-form.form-select name="Category">
                                         @forEach($categories as $category){
+
                                             <option value="{{$category["id"]}}"> {{$category["paste_category"]}}</option>
                                         }
                                         @endforeach
@@ -48,6 +53,9 @@
                             </x-form.form-row-wrapper>
                             {{-- Select Category --}}
 
+                            @error('Category')
+                            <x-error-message class="spaceSide">{{ $message }}</x-error-message>
+                        @enderror
                             {{-- tags --}}
                             <x-form.form-row-wrapper>
                                 <div class="text-white flex-1">
@@ -57,9 +65,8 @@
                                         class="w-full gap-5 bg-gray-50 border border-gray-300 dark:text-neutral-400 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-neutral-900 dark:border-neutral-700">
                                         <ul id="tags-list" class="flex flex-row flex-wrap tagsList"></ul>
                                         <input type="text" id="tags-input" class="inputField inputFieldTags">
-                                        <input type="hidden" id="hidden-field-tags">
+                                        <input type="hidden" id="hidden-field-tags" name="pasteTags">
                                     </div>
-
 
 
 
@@ -194,9 +201,16 @@
         $("#tags-input").on('keydown', function(event) {
             if (event.key == "Enter") {
                 if(event.target.value.length <= 1) return;
-                tags.push(event.target.value);
+                const regExp = /[^a-zA-Z0-9]/g;
+                let cleanStr = event.target.value.replace(regExp, '');
+                tags.push(cleanStr);
                 drawTags(tags);
                 this.value= "";
+                let strValue = tags.join(",");
+                console.log(strValue);
+                hiddenInput.value = strValue;
+
+
             }
         });
         //-=-=-=-=-=-=-=-=-=-=-=-=-=tags -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
