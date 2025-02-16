@@ -5,10 +5,7 @@ use App\Http\Controllers\formController;
 
 
 Route::get('/', [formController::class, "index"])->name('home');
-Route::get('/test', function(){
-    return Redirect::to('/');
 
-});
 
 Route::get('/login', function () {
     return view('login');

@@ -15,7 +15,9 @@
 
 <body>
     <div class="pageWrapper mb-5 flex flex-col">
+
         <x-header />
+
         <div class='spaceSide'>
             <x-workspace>
 
@@ -24,10 +26,16 @@
                         <x-textfield>
                             {{ __('New Paste') }}
                         </x-textfield>
-                        <x-textarea placeholder="Type your message here" name="pasteContent" id="TextArea" rows='5' form="pasteForm" />
-                        <x-textfield rows='10'>
+
+
+                        <x-textarea placeholder="Type your message here" name="pasteContent" id="TextArea" rows='5' form="pasteForm">{{request()->old('pasteContent')}}</x-textarea>
+
+
+                        <x-textfield >
                             {{ __('Optional Paste Settings') }}
                         </x-textfield>
+
+
                         <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
                         </hr>
 
@@ -42,20 +50,21 @@
                                 <div class="text-white flex-1">
                                     <x-form.paste-option-span>{{ __('Category') }}</x-form.paste-option-span></div>
                                 <x-form.input-wrapper>
-                                    <x-form.form-select name="Category">
-                                        @forEach($categories as $category){
 
-                                            <option value="{{$category["id"]}}"> {{$category["paste_category"]}}</option>
-                                        }
-                                        @endforeach
-                                        </x-form-select>
+                                    <x-form.form-select name="Category" :options="$categories" valueName="paste_category" old="{{request()->old('Category')}}" />
+
                                 </x-form.input-wrapper>
                             </x-form.form-row-wrapper>
-                            {{-- Select Category --}}
+
 
                             @error('Category')
-                            <x-error-message class="spaceSide">{{ $message }}</x-error-message>
-                        @enderror
+                                <x-error-message class="spaceSide">{{ $message }}</x-error-message>
+                            @enderror
+
+                            {{-- Select Category --}}
+
+
+
                             {{-- tags --}}
                             <x-form.form-row-wrapper>
                                 <div class="text-white flex-1">
@@ -65,7 +74,7 @@
                                         class="w-full gap-5 bg-gray-50 border border-gray-300 dark:text-neutral-400 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-neutral-900 dark:border-neutral-700">
                                         <ul id="tags-list" class="flex flex-row flex-wrap tagsList"></ul>
                                         <input type="text" id="tags-input" class="inputField inputFieldTags">
-                                        <input type="hidden" id="hidden-field-tags" name="pasteTags">
+                                        <input type="hidden" id="hidden-field-tags" name="pasteTags" value="{{request()->old('pasteTags')}}">
                                     </div>
 
 
@@ -79,14 +88,9 @@
                                 <div class="text-white flex-1">
                                     <x-form.paste-option-span>{{ __('Paste Expiration') }}</x-form.paste-option-span></div>
                                 <x-form.input-wrapper>
-                                    <x-form.form-select name="expiration">
 
-                                        @forEach($expirationTime as $expTime){
-                                            <option value="{{$expTime["id"]}}">{{$expTime['expiration_name']}}</option>
-                                        }
-                                        @endforeach
+                                    <x-form.form-select name="expiration" :options="$expirationTime" valueName="expiration_name" old="{{request()->old('expiration')}}"/>
 
-                                        </x-form-select>
                                 </x-form.input-wrapper>
                             </x-form.form-row-wrapper>
                             {{-- Select Expiration --}}
@@ -97,13 +101,9 @@
                                 <div class="text-white flex-1">
                                     <x-form.paste-option-span>{{ __('Paste Privacy') }}</x-form.paste-option-span></div>
                                 <x-form.input-wrapper>
-                                    <x-form.form-select name="privacy">
-                                        @foreach($privacy as $index => $pr)
-                                            <option value="{{ $index }}">{{ $pr }}</option>
-                                        @endforeach
 
+                                    <x-form.form-select name="privacy" :options="$privacy" valueName="privacy" old="{{request()->old('privacy')}}" />
 
-                                        </x-form-select>
                                 </x-form.input-wrapper>
                             </x-form.form-row-wrapper>
                             {{-- Select privacy --}}
@@ -115,7 +115,7 @@
                                     <x-form.paste-option-span>{{ __('Paste Password') }}</x-form.paste-option-span>
                                 </div>
                                 <x-form.input-wrapper>
-                                    <x-input name="password" type="password" placeholder="Type your password here"/>
+                                    <x-input name="password" value="{{request()->old('password')}}" type="password" placeholder="Type your password here"/>
                                 </x-form.input-wrapper>
                             </x-form.form-row-wrapper>
                             {{-- input password --}}
@@ -126,7 +126,7 @@
                                     <x-form.paste-option-span>{{ __('Paste Name') }}</x-form.paste-option-span>
                                 </div>
                                 <x-form.input-wrapper>
-                                    <x-input name="pasteName" type="text" placeholder="Type paste name here"/>
+                                    <x-input name="pasteName" type="text" placeholder="Type paste name here" value="{{request()->old('pasteName')}}"/>
                                 </x-form.input-wrapper>
                             </x-form.form-row-wrapper>
                             {{-- input name --}}
@@ -165,21 +165,33 @@
     <script>
         /* Text Area resize*/
         let textArea = document.getElementById("TextArea");
-        textArea.addEventListener('input', function(event) {
+
+        const resizeTextArea =  function(event= null) {
             if (textArea) {
                 textArea.style.height = 'auto'; // Reset the height
                 textArea.style.height = `${textArea.scrollHeight}px`; // Set the height
             }
-        });
+        }
+        resizeTextArea();// initial call
+        textArea.addEventListener('input',()=> resizeTextArea(event));
 
 
         //-=-=-=-=-=-=-=-=-=-=-=-=-=tags -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-        let tags = [];
         let hiddenInput = document.getElementById('hidden-field-tags');
+        let tags = hiddenInput.value.split(',').filter(tag => tag !== '');// gets value from the hidden input.
+        // If there is nothing it will remove empty strings like "" this.
+
+        // initial Drawing
+        drawTags(tags);
+
+
+
+
         $('#tags-container').on('click', function() {
             $('.inputFieldTags').focus();
         });
         function drawTags(arr, selector = "tags-list") {
+
             if (!(Array.isArray(arr)) && !(arr.length >= 1)) return;
             let wrapper = document.getElementById(selector);
             wrapper.innerHTML = "";

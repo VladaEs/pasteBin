@@ -22,17 +22,21 @@ class formController extends Controller{
         $categories = Paste_Category::all();
         $pasteExpiration = PasteExpiration::all();
         $pastePrivacy = [
-            "public", "private",
+            ["id"=>1, "privacy"=>"public"],
+            ["id"=>2, "privacy"=>"private"],
+
         ];
         return view("home" ,["categories"=> $categories, "expirationTime"=> $pasteExpiration, "privacy"=>$pastePrivacy]);
     }
 
     public function store(Request $request){
+
+
+
         $validator = Validator::make($request->all(), [
             "pasteContent" =>"required|string",
             "Category" =>"integer",
             "pasteTags"=>['string', 'max:50'],
-            'expiration'=>['required', 'integer'],
             'expiration'=>['required', 'integer'],
             'password'=>['string', 'max:50'],
             "pasteName" =>'required|string|max:255',
@@ -41,8 +45,8 @@ class formController extends Controller{
         ]);
         if ($validator->fails()) {
             return redirect(route("home"))
-                ->withErrors($validator)  // Pass the validator object
-                ->withInput();            // Retain previous input
+                ->withErrors($validator)
+                ->withInput();
         }
 
         if($pasteContent = $request->input("pasteContent") && $pasteName = $request->input("pasteName")){
