@@ -14,22 +14,13 @@ class pastePassController extends Controller
 
     }
     public function checkPassword($id, Request $request){
-        $passHashed= Hash::make($request->input('password'));
-
         $paste_settings = pasteSetting::where('paste_id', $id)->first();
-        if($paste_settings['password'] == $passHashed){
-            session(["paste_access"=>$id]);
-            return redirect()->route("viewPaste", ['id'=> $id]);
-
-//            return redirect()->route();
-        }else{
-            return redirect()->back()->withErrors(["password" =>"Incorrect password"]);
+        if (Hash::check($request->input('password'), $paste_settings['password'])) {
+            session(["paste_access_".$id =>true ]);
+            return redirect()->route("viewPaste", ['id' => $id]);
+        } else {
+            return redirect()->back()->withErrors(["password" => "Incorrect password"]);
         }
-
-
-
-
-
 
 
 

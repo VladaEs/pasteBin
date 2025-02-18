@@ -119,23 +119,9 @@ class formController extends Controller{
                 "paste_privacy"=> $request->input('privacy'),
                 'password'=>$hashedPassword,
             ]);
-
-
-
-
-
-            // pastesettings::
-
-
-
-
         }
 
-
-
-
-
-        return 1;
+        return redirect()->route('viewPaste', $paste['id']);
     }
 
     public function checkTags(){
