@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\PasteExist;
 use App\Http\Middleware\VerifyPastePassword;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,7 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         //
         $middleware->alias([
-            'VerifyPastePassword'=> VerifyPastePassword::class]);
+            'VerifyPastePassword'=> VerifyPastePassword::class,
+            "PasteExist"=> PasteExist::class,
+
+        ]);
 
 
     })

@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('paste_expiration', function (Blueprint $table) {
-            $table->id();
-            $table->string("expiration_name", 255)->default('')->nullable(false);
-            $table->integer("time_equivalent")->default(0)->nullable(false);
-            $table->timestamps();
-
-
+        Schema::table('pastes', function (Blueprint $table) {
+            $table->softDeletes();
         });
     }
 
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('pastes', function (Blueprint $table) {
+
+        });
     }
 };
