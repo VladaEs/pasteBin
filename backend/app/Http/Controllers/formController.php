@@ -19,16 +19,15 @@ use Illuminate\Support\Facades\Validator;
 
 
 class formController extends Controller{
-
     public function index(){
         $categories = Paste_Category::all();
         $pasteExpiration = PasteExpiration::all();
-        $pastePrivacy = [
-            ["id"=>1, "privacy"=>"public"],
-            ["id"=>2, "privacy"=>"private"],
 
-        ];
-        return view("home" ,["categories"=> $categories, "expirationTime"=> $pasteExpiration, "privacy"=>$pastePrivacy]);
+
+
+
+
+        return view("home" ,["categories"=> $categories, "expirationTime"=> $pasteExpiration]);
     }
 
     public function store(Request $request){
@@ -39,11 +38,12 @@ class formController extends Controller{
         $validator = Validator::make($request->all(), [
             "pasteContent" =>"required|string",
             "Category" =>['required',"integer"],
-            "pasteTags"=>['string', 'max:50'],
+            "pasteTags"=>["nullable",'string', 'max:50'],
             'expiration'=>['required', 'integer'],
             'password'=>["nullable",'string', 'max:50'],
             "pasteName" =>'required|string|max:255',
         ]);
+
         if ($validator->fails()) {
             return redirect()
                 ->back()
@@ -54,10 +54,10 @@ class formController extends Controller{
 
 
 
-        if($pasteContent = $request->input("pasteContent") && $pasteName = $request->input("pasteName")){
+        if($request->input("pasteContent") && $pasteName = $request->input("pasteName")){
 
             // check whether this categopry exists:
-            if(! Paste_Category::where('id', $request->input("Category"))->exists()){
+            if( !Paste_Category::where('id', $request->input("Category"))->exists()){
                 return redirect()->back()
                 ->withInput()
                 ->withErrors(["Category" => "Selected category doesnt exist"]);
@@ -69,10 +69,10 @@ class formController extends Controller{
             $fileName= $pasteName ."_" .$uuid;
             $location = '';
             if($password = $request->input("password")){
-                Storage::disk('local')->put($fileName,$pasteContent);
+                Storage::disk('local')->put($fileName,$request->input("pasteContent"));
                 $location= "local";
             }else{
-                Storage::disk('public')->put($fileName,$pasteContent);
+                Storage::disk('public')->put($fileName,$request->input("pasteContent"));
                 $location= "public";
             }
 
@@ -111,12 +111,22 @@ class formController extends Controller{
             }
 
             Paste_Tag::insert($insertTags);
-            $hashedPassword = Hash::make($request->input('password'));
+
+            $hashedPassword= null;
+            if($request->input('password') != null){
+                $hashedPassword = Hash::make($request->input('password'));
+            }
+
+
+            $privacy= 1;
+            if($request->input('password') != null){
+                $privacy= 2;
+            }
             pasteSetting::create([
                 "paste_id"=>$paste['id'],
                 "category_id"=>$request->input("Category"),
                 "paste_expiration"=>$request->input("expiration"),
-                "paste_privacy"=> $request->input('privacy'),
+                "paste_privacy"=> $privacy,
                 'password'=>$hashedPassword,
             ]);
         }

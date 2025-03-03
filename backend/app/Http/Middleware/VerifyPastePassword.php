@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Models\pasteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,9 +22,9 @@ class VerifyPastePassword
             'id' => $id,
             'value' => $request->session()->get('paste_access_'.$id)
         ]);
+        $paste = pasteSetting::where("paste_id", $id)->first();
 
-
-        if($request->session()->get('paste_access_'.$id) == null || $request->session()->get('paste_access_'.$id) != true ){
+        if($paste['password'] != null && $request->session()->get('paste_access_'.$id) == null && $request->session()->get('paste_access_'.$id) != true  ){
             return redirect()->route('passwordPage', ['id'=> $id]);
         }
         return $next($request);

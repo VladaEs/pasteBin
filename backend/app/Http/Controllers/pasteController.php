@@ -12,26 +12,24 @@ class pasteController extends Controller
 {
 
 
-    public function __invoke($pasteId){
-
+    public function __invoke($pasteId)
+    {
         $paste = $this->changePasteExpiration($pasteId);
         $pasteSettings = PasteSetting::where('paste_id', $pasteId)->first();
-        $disk = $pasteSettings['paste_privacy']== 2? 'private': 'public';
         if (!$paste || !$pasteSettings) {
             return response()->view("file not found");
         }
-        $pasteContent = '';
-        if (Storage::disk('local')->exists($paste['filename']) || Storage::disk('public')->exists($paste['filename'])) {
-            $pasteContent = Storage::disk($disk)->get($paste['filename']);
-
-
+        $filename = $paste['filename'];
+        $pasteContent = null;
+        if (Storage::disk('local')->exists($filename)) {
+            $pasteContent = Storage::disk('local')->get($filename);
+        } elseif (Storage::disk('public')->exists($filename)) {
+            $pasteContent = Storage::disk('public')->get($filename);
         } else {
             return response()->view("file not found");
         }
-        // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Paste Expiration handling -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-
-        return view('paste', ["pasteContent"=> $pasteContent]);
+        return view('paste', ["pasteContent" => $pasteContent]);
     }
     public function changePasteExpiration($pasteId){
         $paste = Paste::where("id", $pasteId)->first();

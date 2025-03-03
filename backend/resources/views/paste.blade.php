@@ -18,7 +18,7 @@
                 </x-textfield>
 
 
-                <x-textarea placeholder="Type your message here" name="pasteContent" id="TextArea" rows='5'>{{$pasteContent}}</x-textarea>
+                <x-textarea name="pasteContent" id="TextArea" rows='5' >{{$pasteContent}}</x-textarea>
                 @error('pasteContent')
                     <x-error-message class="spaceSide">{{ $message }}</x-error-message>
                 @enderror

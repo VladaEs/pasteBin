@@ -91,7 +91,7 @@
 
 
                         {{-- Select privacy--}}
-                        <x-form.form-row-wrapper>
+                        {{-- <x-form.form-row-wrapper>
                             <div class="text-white flex-1">
                                 <x-form.paste-option-span>{{ __('Paste Privacy') }}</x-form.paste-option-span></div>
                             <x-form.input-wrapper>
@@ -102,7 +102,7 @@
                         </x-form.form-row-wrapper>
                         @error('privacy')
                             <x-error-message class="spaceSide">{{ $message }}</x-error-message>
-                        @enderror
+                        @enderror --}}
                         {{-- Select privacy --}}
 
 
