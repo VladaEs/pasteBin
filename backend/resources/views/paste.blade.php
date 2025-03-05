@@ -25,9 +25,8 @@
 
 
 
-                <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
-                </hr>
-
+                <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700" />
+                <span>{{$pasteViews}}</span>
 
 
             </div>

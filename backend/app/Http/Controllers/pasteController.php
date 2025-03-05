@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Paste;
+use App\Models\PasteView;
 use App\Models\PasteExpiration;
 use App\Models\pasteSetting;
 use Illuminate\Support\Facades\Storage;
@@ -28,8 +29,10 @@ class pasteController extends Controller
         } else {
             return response()->view("file not found");
         }
-
-        return view('paste', ["pasteContent" => $pasteContent]);
+        // if we return content we need to add  +1 to view
+        $pasteViews= PasteView::where('paste_id', $paste['id'])->first();
+        $this->updateViews($pasteViews);
+        return view('paste', ["pasteContent" => $pasteContent, "pasteViews"=> $pasteViews['views_amount']]);
     }
     public function changePasteExpiration($pasteId){
         $paste = Paste::where("id", $pasteId)->first();
@@ -44,6 +47,18 @@ class pasteController extends Controller
 
         return $paste;
     }
+
+    public function updateViews(PasteView $pasteView){
+        if(session()->get('paste_viewed_'. $pasteView['paste_id'])!= null || session()->get('paste_viewed_'. $pasteView['paste_id']) == true){
+            return 0;
+        }
+
+        $pasteView['views_amount'] =$pasteView['views_amount'] + 1;
+        session()->put('paste_viewed_'. $pasteView['paste_id'], true);
+        $pasteView->save();
+
+    }
+
 
 
 }

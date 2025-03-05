@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Models\PasteView;
 use Carbon\Carbon;
 use App\Models\Tag;
 use App\Models\Paste;
@@ -122,6 +124,10 @@ class formController extends Controller{
             if($request->input('password') != null){
                 $privacy= 2;
             }
+            PasteView::create([
+                "paste_id"=>$paste['id'],
+                "views_amount" => 0,
+            ]);
             pasteSetting::create([
                 "paste_id"=>$paste['id'],
                 "category_id"=>$request->input("Category"),

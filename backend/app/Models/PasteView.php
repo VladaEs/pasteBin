@@ -8,6 +8,6 @@ class PasteView extends Model
 {
     protected $table = "paste_views";
     protected $fillable = [
-        'paste_id', 'views',
+        'paste_id', 'views_amount',
     ];
 }
