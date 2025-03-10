@@ -33,7 +33,7 @@
                         onkeydown="return event.key != 'Enter';">
                         {{-- Select Category--}}
 
-                        @csrf
+
 
                         <x-form.form-row-wrapper>
                             <div class="text-white flex-1">
