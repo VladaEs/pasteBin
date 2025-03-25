@@ -3,21 +3,22 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\PasteView;
 use Carbon\Carbon;
 use App\Models\Tag;
 use App\Models\Paste;
+use App\Models\Paste_Tag;
+use App\Models\PasteView;
 use Illuminate\Support\Str;
 use App\Models\pasteSetting;
 use Illuminate\Http\Request;
 use App\Models\Paste_Category;
-use App\Models\Paste_Tag;
 
 use App\Models\PasteExpiration;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 
 class formController extends Controller{
@@ -35,7 +36,7 @@ class formController extends Controller{
     public function store(Request $request){
 
 
-
+        dd(Auth::user());
 
         $validator = Validator::make($request->all(), [
             "pasteContent" =>"required|string",
