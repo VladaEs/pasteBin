@@ -25,18 +25,15 @@ class formController extends Controller{
     public function index(){
         $categories = Paste_Category::all();
         $pasteExpiration = PasteExpiration::all();
+        $publicPastes = Paste::publicPastes()->get();
 
 
 
 
-
-        return view("home" ,["categories"=> $categories, "expirationTime"=> $pasteExpiration]);
+        return view("home" ,["categories"=> $categories, "expirationTime"=> $pasteExpiration, "publicPastes"=>$publicPastes]);
     }
 
     public function store(Request $request){
-
-
-        dd(Auth::user());
 
         $validator = Validator::make($request->all(), [
             "pasteContent" =>"required|string",

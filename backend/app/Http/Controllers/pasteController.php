@@ -16,6 +16,9 @@ class pasteController extends Controller
     public function __invoke($pasteId)
     {
         $paste = $this->changePasteExpiration($pasteId);
+
+
+
         $pasteSettings = PasteSetting::where('paste_id', $pasteId)->first();
         if (!$paste || !$pasteSettings) {
             return response()->view("file not found");
@@ -34,6 +37,8 @@ class pasteController extends Controller
         $this->updateViews($pasteViews);
         return view('paste', ["pasteContent" => $pasteContent, "pasteViews"=> $pasteViews['views_amount']]);
     }
+
+
     public function changePasteExpiration($pasteId){
         $paste = Paste::where("id", $pasteId)->first();
         $pasteSettings =PasteSetting::where('paste_id', $pasteId)->first();

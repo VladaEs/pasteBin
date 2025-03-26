@@ -144,6 +144,14 @@
                 </div>
                 <x-sidebar>
                     {{ __('Public Pastes') }}
+
+                    <div class="pasteWrapper flex flex-col">
+                        <x-textfield>hello</x-textfield>
+                        <div class="flex flex-row">
+                            <span class="pasteTimeCreation">20 minutes ago</span>
+                            <span class="pasteCategory">Programming</span>
+                        </div>
+                    </div>
                 </x-sidebar>
             </x-gridlayoutform>
         </x-workspace>
