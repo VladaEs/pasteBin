@@ -26,9 +26,9 @@ class formController extends Controller{
         $categories = Paste_Category::all();
         $pasteExpiration = PasteExpiration::all();
         $publicPastes = Paste::publicPastes()->get();
-
-
-
+        //dd($publicPastes);
+        $timeRes = Carbon::parse($publicPastes[0]['created_ad']);
+        dd($timeRes);
 
         return view("home" ,["categories"=> $categories, "expirationTime"=> $pasteExpiration, "publicPastes"=>$publicPastes]);
     }

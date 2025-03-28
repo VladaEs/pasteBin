@@ -144,14 +144,16 @@
                 </div>
                 <x-sidebar>
                     {{ __('Public Pastes') }}
-
+                    @foreach($publicPastes as $publicPaste)
                     <div class="pasteWrapper flex flex-col">
                         <x-textfield>hello</x-textfield>
-                        <div class="flex flex-row">
-                            <span class="pasteTimeCreation">20 minutes ago</span>
-                            <span class="pasteCategory">Programming</span>
+                        <div class="flex flex-row text-xs font-normal text-gray-200 tracking-wide capitalize whitespace-nowrap">
+                            <span class="pasteTimeCreation">{{$publicPaste['created_at']}}</span>
+                            <span class="mr-2 ml-2">|</span>
+                            <span class="pasteCategory">{{$publicPaste['paste_category']}}</span>
                         </div>
                     </div>
+                    @endforeach
                 </x-sidebar>
             </x-gridlayoutform>
         </x-workspace>

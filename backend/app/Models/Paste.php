@@ -23,11 +23,18 @@ class Paste extends Model
         return $this->hasOne(pasteSetting::class, "paste_id", 'id');
     }
     public function scopePublicPastes($query){
-
-
-
-
-        return $query->join('paste_settings', "pastes.id", '=', 'paste_settings.paste_id')
+        return $query
+        ->leftJoin('paste_settings', "pastes.id", '=', 'paste_settings.paste_id')
+        ->leftJoin("paste_categories", "paste_settings.category_id", '=', 'paste_categories.id')
+        ->select(
+            'pastes.id',
+            'pastes.filename',
+            'pastes.created_at',  // Explicitly select it
+            'pastes.updated_at',
+            'paste_settings.paste_id',
+            'paste_settings.category_id',
+            'paste_categories.paste_category'
+        )
         ->where('paste_settings.paste_privacy', 1)
         ->where('pastes.created_at', '<', now())->limit(5);
     }
