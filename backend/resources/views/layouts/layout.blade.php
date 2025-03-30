@@ -22,10 +22,11 @@
 
         <x-header />
 
-
         @yield('content')
     </main>
 
+
+@yield('scripts')
 
 </body>
 

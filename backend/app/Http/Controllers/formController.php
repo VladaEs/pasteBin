@@ -23,14 +23,22 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class formController extends Controller{
     public function index(){
+
+
+       // if()
+
+
         $categories = Paste_Category::all();
         $pasteExpiration = PasteExpiration::all();
-        $publicPastes = Paste::publicPastes()->get();
-        //dd($publicPastes);
-        $timeRes = Carbon::parse($publicPastes[0]['created_ad']);
-        dd($timeRes);
+        // $publicPastes = Paste::publicPastes()->get();
 
-        return view("home" ,["categories"=> $categories, "expirationTime"=> $pasteExpiration, "publicPastes"=>$publicPastes]);
+
+        // for($i = 0; $i<count($publicPastes);$i++){
+        //     $publicPastes[$i]['timeDifference']=  Carbon::parse( $publicPastes[$i]->created_at)->diffForHumans();
+        // }
+        //dd($publicPastes);
+        return view("home" ,["categories"=> $categories, "expirationTime"=> $pasteExpiration, //"publicPastes"=>$publicPastes
+            ]);
     }
 
     public function store(Request $request){
@@ -50,7 +58,6 @@ class formController extends Controller{
                 ->withErrors($validator)
                 ->withInput();
         };
-
 
 
 
@@ -96,8 +103,11 @@ class formController extends Controller{
                 }
             }
             //-=-=-=-= Paste creation to have an paste ID in advance-=-=-=-=
+            $userId= Auth::user() == NULL ? NULL : Auth::user()['id'];
+
             $paste = Paste::create([
                 "filename"=> $fileName,
+                'author_id'=>$userId,
             ]);
 
 
@@ -132,6 +142,7 @@ class formController extends Controller{
                 "paste_expiration"=>$request->input("expiration"),
                 "paste_privacy"=> $privacy,
                 'password'=>$hashedPassword,
+                'paste_custom_name'=>$request->input("pasteName"),
             ]);
         }
 

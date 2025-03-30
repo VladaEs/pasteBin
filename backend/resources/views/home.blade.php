@@ -1,14 +1,12 @@
-@extends('layouts.layout')
+@extends('layouts.pasteLayout')
 
 
 @section("title", "Paste bin made by VladaEs")
 
 
-@section('content')
-    <div class='spaceSide'>
-        <x-workspace>
 
-            <x-gridlayoutform>
+    <div class='spaceSide'>
+                @section('leftSide')
                 <div>
                     <x-textfield>
                         {{ __('New Paste') }}
@@ -142,21 +140,25 @@
                         </x-form-paste>
 
                 </div>
+                @endsection
+
+                @section('rightSide')
                 <x-sidebar>
                     {{ __('Public Pastes') }}
+
                     @foreach($publicPastes as $publicPaste)
                     <div class="pasteWrapper flex flex-col">
-                        <x-textfield>hello</x-textfield>
+                        <x-textfield><a href="{{route('viewPaste', $publicPaste['id'])}}">{{$publicPaste['paste_custom_name']}} </a></x-textfield>
                         <div class="flex flex-row text-xs font-normal text-gray-200 tracking-wide capitalize whitespace-nowrap">
-                            <span class="pasteTimeCreation">{{$publicPaste['created_at']}}</span>
+
+                            <span class="pasteTimeCreation">{{$publicPaste['timeDifference']}} </span>
                             <span class="mr-2 ml-2">|</span>
                             <span class="pasteCategory">{{$publicPaste['paste_category']}}</span>
                         </div>
                     </div>
                     @endforeach
                 </x-sidebar>
-            </x-gridlayoutform>
-        </x-workspace>
+                @endsection
 
     </div>
 
@@ -176,6 +178,7 @@
 </div>
 
 --}}
+@section("scripts")
 <script>
     /* Text Area resize*/
     let textArea = document.getElementById("TextArea");
@@ -242,5 +245,5 @@
     //-=-=-=-=-=-=-=-=-=-=-=-=-=tags -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 </script>
 
-
 @endsection
+

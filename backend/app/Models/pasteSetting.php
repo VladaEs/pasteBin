@@ -10,7 +10,7 @@ class pasteSetting extends Model
     protected $fillable =[
         "paste_id", "category_id",
         'paste_expiration', 'paste_privacy',
-        "password",
+        "password","paste_custom_name",
     ];
 
 }

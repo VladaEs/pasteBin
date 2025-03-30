@@ -29,11 +29,12 @@ class Paste extends Model
         ->select(
             'pastes.id',
             'pastes.filename',
-            'pastes.created_at',  // Explicitly select it
+            'pastes.created_at',
             'pastes.updated_at',
             'paste_settings.paste_id',
             'paste_settings.category_id',
-            'paste_categories.paste_category'
+            'paste_categories.paste_category',
+            'paste_settings.paste_custom_name',
         )
         ->where('paste_settings.paste_privacy', 1)
         ->where('pastes.created_at', '<', now())->limit(5);

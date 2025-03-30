@@ -1,11 +1,12 @@
 <?php
 
+use App\Http\Controllers\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\formController;
 use App\Http\Controllers\pasteController;
-use App\Http\Controllers\pastePassController;
-use App\Http\Controllers\Auth;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\pastePassController;
+use App\Http\Controllers\ScheduleDeletePasteController;
 
 Route::get('/', [formController::class, "index"])->name('home');
 Route::post('/paste/store', [formController::class, "store"])->name("createPaste");
@@ -15,7 +16,7 @@ Route::get('/paste/{id}', pasteController::class)
     ->middleware("VerifyPastePassword")
     ->name('viewPaste');
 
-
+    Route::get('/testroute', ScheduleDeletePasteController::class);
 
 Route::get('/paste/{id}/password',[pastePassController::class, 'index'])
     ->middleware('PasteExist')
