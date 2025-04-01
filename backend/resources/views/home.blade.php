@@ -12,6 +12,15 @@
                         {{ __('New Paste') }}
                     </x-textfield>
 
+                    @if(isset($paste_id))
+                        <x-error-message class="spaceSide">
+                            Public link to your paste: <a href="{{ route('viewPaste', ['id' => $paste_id]) }}">{{ route('viewPaste', ['id' => $paste_id]) }}</a>
+                        </x-error-message>
+                    @endif
+
+                        @error('expired')
+                            <x-error-message class="spaceSide">{{ $message }}</x-error-message>
+                        @enderror
 
                     <x-textarea placeholder="Type your message here" name="pasteContent" id="TextArea" rows='5' form="pasteForm">{{request()->old('pasteContent')}}</x-textarea>
                     @error('pasteContent')

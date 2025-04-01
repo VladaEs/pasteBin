@@ -146,6 +146,10 @@ class formController extends Controller{
             ]);
         }
 
+        if($request->input("expiration") == 2){ // id
+            return redirect()->route('pasteCreatedConfirmation', ["pasteId"=> $paste['id']]);
+        }
+
         return redirect()->route('viewPaste', $paste['id']);
     }
 

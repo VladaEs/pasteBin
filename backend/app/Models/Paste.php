@@ -39,5 +39,28 @@ class Paste extends Model
         ->where('paste_settings.paste_privacy', 1)
         ->where('pastes.created_at', '<', now())->limit(5);
     }
+    public function scopePublicPastesSearch($query, $pasteName= ''){
+        return $query
+        ->leftJoin('paste_settings', "pastes.id", '=', 'paste_settings.paste_id')
+        ->leftJoin("paste_categories", "paste_settings.category_id", '=', 'paste_categories.id')
+        ->select(
+            'pastes.id',
+            'pastes.filename',
+            'pastes.created_at',
+            'pastes.updated_at',
+            'paste_settings.paste_id',
+            'paste_settings.category_id',
+            'paste_categories.paste_category',
+            'paste_settings.paste_custom_name',
+        )
+        ->where('paste_settings.paste_privacy', 1)
+        ->where('pastes.created_at', '<', now())
+        ->whereAny([
+            'paste_categories.paste_category',
+            'paste_settings.paste_custom_name',
+        ], 'like', '%'.$pasteName. "%")
+
+        ->limit(15);
+    }
 
 }

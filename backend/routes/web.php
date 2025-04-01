@@ -7,6 +7,8 @@ use App\Http\Controllers\pasteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\pastePassController;
 use App\Http\Controllers\ScheduleDeletePasteController;
+use App\Http\Controllers\SearchController;
+
 
 Route::get('/', [formController::class, "index"])->name('home');
 Route::post('/paste/store', [formController::class, "store"])->name("createPaste");
@@ -14,16 +16,27 @@ Route::post('/paste/store', [formController::class, "store"])->name("createPaste
 Route::get('/paste/{id}', pasteController::class)
     ->middleware('PasteExist')
     ->middleware("VerifyPastePassword")
+    ->middleware('PasteExpired')
     ->name('viewPaste');
 
-    Route::get('/testroute', ScheduleDeletePasteController::class);
+Route::get("/pastecreated",[pasteController::class, 'confirmation'])->name('pasteCreatedConfirmation');
+
 
 Route::get('/paste/{id}/password',[pastePassController::class, 'index'])
     ->middleware('PasteExist')
+    ->middleware('PasteExpired')
     ->name('passwordPage');
 Route::post('/paste/{id}/password',[pastePassController::class, 'checkPassword'])
     ->middleware('PasteExist')
+    ->middleware('PasteExpired')
     ->name('checkPastePassword');
+
+
+
+    //Route::get('/testroute', ScheduleDeletePasteController::class);
+
+Route::get('/search', [SearchController::class, 'index'])->name('searchPaste');
+Route::post('/search', [SearchController::class, 'searchPastes']);
 
 
 

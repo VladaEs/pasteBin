@@ -15,13 +15,22 @@ class pasteController extends Controller
 
     public function __invoke($pasteId)
     {
-        $paste = $this->changePasteExpiration($pasteId);
+        //$paste = $this->changePasteExpiration($pasteId);
+
+        $paste =  Paste::where("id", $pasteId)->first();
+
+        $pasteSettings = PasteSetting::where('paste_id', $paste->id)->first();
+
+        $pasteExpiration = PasteExpiration::where('id', $pasteSettings['paste_expiration'])->first();
 
 
+        if($pasteExpiration->time_equivalent == 1 && $paste->deleted_at== null ){ //burn after read
+            $paste->delete();
+        }
 
-        $pasteSettings = PasteSetting::where('paste_id', $pasteId)->first();
+
         if (!$paste || !$pasteSettings) {
-            return response()->view("file not found");
+            return redirect(route('home'))->withErrors(["expired" => "pasteExpired"]);
         }
         $filename = $paste['filename'];
         $pasteContent = null;
@@ -39,19 +48,19 @@ class pasteController extends Controller
     }
 
 
-    public function changePasteExpiration($pasteId){
-        $paste = Paste::where("id", $pasteId)->first();
-        $pasteSettings =PasteSetting::where('paste_id', $pasteId)->first();
-        $expirationTime = PasteExpiration::where('id',$pasteSettings['paste_expiration'])->first();
+    // public function changePasteExpiration($pasteId){
+    //     $paste = Paste::where("id", $pasteId)->first();
+    //     $pasteSettings =PasteSetting::where('paste_id', $pasteId)->first();
+    //     $expirationTime = PasteExpiration::where('id',$pasteSettings['paste_expiration'])->first();
 
-        if ($paste && $paste->created_at->addSeconds($expirationTime['time_equivalent'])->isPast()
-                                && $expirationTime['expiration_name'] != 'Never') {
-            $paste->delete();
-        }
+    //     if ($paste && $paste->created_at->addSeconds($expirationTime['time_equivalent'])->isPast()
+    //                             && $expirationTime['expiration_name'] != 'Never') {
+    //         $paste->delete();
+    //     }
 
 
-        return $paste;
-    }
+    //     return $paste;
+    // }
 
     public function updateViews(PasteView $pasteView){
         if(session()->get('paste_viewed_'. $pasteView['paste_id'])!= null || session()->get('paste_viewed_'. $pasteView['paste_id']) == true){
@@ -61,6 +70,13 @@ class pasteController extends Controller
         $pasteView['views_amount'] =$pasteView['views_amount'] + 1;
         session()->put('paste_viewed_'. $pasteView['paste_id'], true);
         $pasteView->save();
+
+    }
+
+    public function confirmation(Request $request){
+
+        $pasteId = $request->query('pasteId');
+        return view('confirmationPage', compact('pasteId'));
 
     }
 

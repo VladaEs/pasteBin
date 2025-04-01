@@ -3,12 +3,13 @@
         <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl ">
             <div class='flex flex-row'>
 
-                    <img src="/images/pastebin.svg" class="mr-3 h-6 sm:h-9" alt="PASTEBIN Logo" />
 
-                    <a href="{{ route('home') }}"><span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">PASTEBIN</span></a>
+                    <a href="{{ route('home') }}"><span class="ml-3 self-center text-xl font-semibold whitespace-nowrap dark:text-white">PASTEBIN</span></a>
                 </div>
             <div class="flex items-center lg:order-2">
-
+                    <a href="{{ route('searchPaste') }}" class='text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'>
+                        Find Paste
+                    </a>
                     @auth
                         <a href="{{ route('profile.edit') }}" class='text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'>
                             {{ Auth::user()->name }}
