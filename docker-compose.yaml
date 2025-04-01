@@ -20,20 +20,6 @@ services:
       - app
 
 
-  frontend:
-    build: 
-      context: ./frontend
-      dockerfile: Dockerfile
-    tty: true
-    networks:
-      - app
-    ports:
-      - 3000:3000
-    volumes:
-     - ./frontend:/app/frontend
-    depends_on:
-      - backend
-
 
   db:
     image: mysql:5.7
